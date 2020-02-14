@@ -1,0 +1,4 @@
+﻿@namespace UsbLog.DSL
+@classname DslParser
+
+@start CompilationUnit
