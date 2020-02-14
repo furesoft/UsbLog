@@ -7,19 +7,9 @@ namespace UsbLog.Service
     {
         public bool Start(HostControl hostControl)
         {
-            UsbEvent.OnAttach(_ =>
+            UsbHelper.OnAttach(_ =>
             {
-                foreach (var d in _)
-                {
-                    System.Console.WriteLine(d.Name);
-                }
-            });
-            UsbEvent.OnDettach(_ =>
-            {
-                foreach (var d in _)
-                {
-                    System.Console.WriteLine(d.Name);
-                }
+                var configured = UsbHelper.IsConfigured(_);
             });
 
             return true;
@@ -27,7 +17,7 @@ namespace UsbLog.Service
 
         public bool Stop(HostControl hostControl)
         {
-            UsbEvent.Stop();
+            UsbHelper.Stop();
             return true;
         }
     }
