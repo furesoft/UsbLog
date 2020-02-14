@@ -1,4 +1,5 @@
 ﻿using Topshelf;
+using UsbLog.Core;
 
 namespace UsbLog.Service
 {
@@ -6,12 +7,28 @@ namespace UsbLog.Service
     {
         public bool Start(HostControl hostControl)
         {
-            throw new System.NotImplementedException();
+            UsbEvent.OnAttach(_ =>
+            {
+                foreach (var d in _)
+                {
+                    System.Console.WriteLine(d.Name);
+                }
+            });
+            UsbEvent.OnDettach(_ =>
+            {
+                foreach (var d in _)
+                {
+                    System.Console.WriteLine(d.Name);
+                }
+            });
+
+            return true;
         }
 
         public bool Stop(HostControl hostControl)
         {
-            throw new System.NotImplementedException();
+            UsbEvent.Stop();
+            return true;
         }
     }
 }
