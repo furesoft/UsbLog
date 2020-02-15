@@ -13,14 +13,19 @@ namespace UsbLog.VM
         public static void Invoke(byte[] bytecode, RegistryKey root)
         {
             byte opcode = 0;
-            int iP = -1;
+            int iP = 0;
 
-            while (opcode != 0x1)
+            do
             {
-                opcode = bytecode[iP++];
+                opcode = bytecode[iP];
 
-                _tasks[opcode].Invoke(root);
-            }
+                if (opcode != 0x1)
+                {
+                    _tasks[opcode].Invoke(root);
+                }
+
+                iP++;
+            } while (opcode != 0x1);
         }
 
         private static Dictionary<int, IVmTask> _tasks = new Dictionary<int, IVmTask>();

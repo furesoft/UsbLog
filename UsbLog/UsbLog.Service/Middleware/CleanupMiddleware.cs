@@ -1,5 +1,6 @@
 ﻿using PipelineNet.Middleware;
 using System;
+using UsbLog.Core;
 
 namespace UsbLog.Service.Middleware
 {
@@ -7,6 +8,8 @@ namespace UsbLog.Service.Middleware
     {
         public void Run(MiddlewareContext strm, Action<MiddlewareContext> next)
         {
+            DISK.DropStream(strm.Strm);
+
             next(strm);
         }
     }

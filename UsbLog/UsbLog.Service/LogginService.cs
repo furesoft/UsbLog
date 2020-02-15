@@ -28,7 +28,7 @@ namespace UsbLog.Service
                     pipeline.Add<CleanupMiddleware>();
 
                     var context = new MiddlewareContext();
-                    context.Strm = UsbHelper.GetStream(_);
+                    context.Strm = stream;
 
                     pipeline.Execute(context);
                 }
@@ -42,6 +42,7 @@ namespace UsbLog.Service
             Logger.Trace($"Service stopped");
 
             UsbHelper.Stop();
+            DisposePipe.DisposeAll();
 
             return true;
         }

