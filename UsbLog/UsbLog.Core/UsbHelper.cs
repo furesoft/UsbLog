@@ -1,6 +1,5 @@
 ﻿using DiscUtils.Registry;
 using System;
-using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Management;
@@ -25,6 +24,22 @@ namespace UsbLog.Core
         public static DISK.SafeStreamManager GetStream(string name)
         {
             return DISK.CreateStream($@"\\.\{name}", FileAccess.ReadWrite);
+        }
+
+        public static void Initialize(DISK.SafeStreamManager myStream)
+        {
+            Configure(myStream, _ =>
+            {
+                _.SetValue("Version", new Version(1, 0, 0, 0));
+                _.SetValue("ByteCode", new byte[] { 0x1 });
+
+                _.CreateSubKey("Config");
+                _.CreateSubKey("Update");
+
+                var data = _.CreateSubKey("Data");
+                data.CreateSubKey("Keys");
+                data.CreateSubKey("ScreenShots");
+            });
         }
 
         public static (bool, DISK.SafeStreamManager) IsConfigured(string name)
