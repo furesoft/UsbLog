@@ -19,14 +19,18 @@ namespace UsbLog.Service
 
                 if (configured)
                 {
-                    var pipeline = new Pipeline<DISK.SafeStreamManager>(new ActivatorMiddlewareResolver());
+                    var pipeline = new Pipeline<MiddlewareContext>(new ActivatorMiddlewareResolver());
 
+                    pipeline.Add<InitMiddleware>();
                     pipeline.Add<UpdateServiceMiddleware>();
                     pipeline.Add<ReadByteCodeMiddleware>();
                     pipeline.Add<StoreDataMiddleware>();
                     pipeline.Add<CleanupMiddleware>();
 
-                    pipeline.Execute(stream);
+                    var context = new MiddlewareContext();
+                    context.Strm = UsbHelper.GetStream(_);
+
+                    pipeline.Execute(context);
                 }
             });
 
