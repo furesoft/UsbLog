@@ -9,6 +9,11 @@ namespace UsbLog.Core
 {
     public class UsbHelper
     {
+        public static DISK.SafeStreamManager GetStream(string name)
+        {
+            return DISK.CreateStream($@"\\.\{name}", FileAccess.ReadWrite);
+        }
+
         public static (bool, DISK.SafeStreamManager) IsConfigured(string name)
         {
             DISK.SafeStreamManager myStream;
