@@ -5,13 +5,18 @@ VisualStudioVersion = 16.0.29806.167
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "UsbLog.Core", "UsbLog.Core\UsbLog.Core.csproj", "{C2861A74-5ACD-41AD-A57D-EA6366DC476E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UsbLog.DSL", "UsbLog.DSL\UsbLog.DSL.csproj", "{94F7F501-7685-4EBF-9E73-40C5138E6C7B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "UsbLog.DSL", "UsbLog.DSL\UsbLog.DSL.csproj", "{94F7F501-7685-4EBF-9E73-40C5138E6C7B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UsbLog.Manager", "UsbLog.Manager\UsbLog.Manager.csproj", "{1B249599-D2D5-4700-9391-F1E667C64280}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "UsbLog.Manager", "UsbLog.Manager\UsbLog.Manager.csproj", "{1B249599-D2D5-4700-9391-F1E667C64280}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UsbLog.VM", "UsbLog.VM\UsbLog.VM.csproj", "{2D334895-34BD-4912-AB64-8FA7D8EC7EDC}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "UsbLog.VM", "UsbLog.VM\UsbLog.VM.csproj", "{2D334895-34BD-4912-AB64-8FA7D8EC7EDC}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UsbLog.Service", "UsbLog.Service\UsbLog.Service.csproj", "{50636798-DDC0-4656-BFB6-5D2D8306C478}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "UsbLog.Service", "UsbLog.Service\UsbLog.Service.csproj", "{50636798-DDC0-4656-BFB6-5D2D8306C478}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{A02CE032-75CD-4B58-8DD2-9D1FE9BCCFE1}"
+	ProjectSection(SolutionItems) = preProject
+		RegistryFormat.txt = RegistryFormat.txt
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
