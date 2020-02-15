@@ -4,4 +4,12 @@
     <TargetFramework>netstandard2.0</TargetFramework>
   </PropertyGroup>
 
+  <ItemGroup>
+    <PackageReference Include="DiscUtils.Registry" Version="0.15.1-ci0002" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\UsbLog.Core\UsbLog.Core.csproj" />
+  </ItemGroup>
+
 </Project>
