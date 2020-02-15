@@ -1,12 +1,11 @@
 ﻿using PipelineNet.Middleware;
 using System;
-using UsbLog.Core;
 
 namespace UsbLog.Service.Middleware
 {
-    internal class UpdateServiceMiddleware : IMiddleware<DISK.SafeStreamManager>
+    internal class UpdateServiceMiddleware : IMiddleware<MiddlewareContext>
     {
-        public void Run(DISK.SafeStreamManager strm, Action<DISK.SafeStreamManager> next)
+        public void Run(MiddlewareContext strm, Action<MiddlewareContext> next)
         {
             next(strm);
         }
