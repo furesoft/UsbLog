@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Management;
+using System.Text;
 
 namespace UsbLog.Core
 {
@@ -14,13 +15,13 @@ namespace UsbLog.Core
 
             myStream = DISK.CreateStream($@"\\.\{name}", FileAccess.ReadWrite);
 
-            var firstBlock = new byte[512];
+            byte[] firstBlock;
 
             if (!myStream.f_error)
             {
-                firstBlock = DISK.ReadBytes(0, 50, myStream);
+                firstBlock = DISK.ReadBytes(0, 4, myStream);
 
-                Logger.Trace(firstBlock);
+                Logger.Trace(Encoding.ASCII.GetString(firstBlock));
 
                 try
                 {
@@ -55,21 +56,15 @@ namespace UsbLog.Core
             insertWatcher.Start();
         }
 
-        public static void OnDettach(Action<string> callback)
+        public static void OnDettach(Action callback)
         {
             WqlEventQuery removeQuery = new WqlEventQuery("SELECT * FROM __InstanceDeletionEvent WITHIN 2 WHERE TargetInstance ISA 'Win32_USBHub'");
 
             removeWatcher = new ManagementEventWatcher(removeQuery);
             removeWatcher.EventArrived += new EventArrivedEventHandler((_, e) =>
             {
-                var drives = DriveInfo.GetDrives().Where(__ => __.DriveType == DriveType.Removable);
-                string phyd = @"\\.\" + drives?.FirstOrDefault().Name;
-
-                if (phyd != null)
-                {
-                    Logger.Trace($"USB ejected");
-                    callback(phyd);
-                }
+                Logger.Trace($"USB ejected");
+                callback();
             });
 
             removeWatcher.Start();
