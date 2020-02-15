@@ -19,8 +19,8 @@ namespace UsbLog.Service.Middleware
 
             var buffer = DISK.ReadBytes(0, 2048, strm.Strm);
 
-            strm.Hive = new RegistryHive(new MemoryStream(buffer));
-            var hello = strm.Hive.Root.OpenSubKey("helloworld");
+            strm.Hive = new RegistryHive(strm.Strm.STR);
+            var hello = strm.Hive.Root.OpenSubKey("hello world");
             var value = hello.GetValue("data");
 
             next(strm);

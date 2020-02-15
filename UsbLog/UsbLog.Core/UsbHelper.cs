@@ -34,8 +34,6 @@ namespace UsbLog.Core
                 {
                     Logger.Trace(ex.ToString());
                 }
-
-                DISK.DropStream(myStream);
             }
 
             return (false, default(DISK.SafeStreamManager));
