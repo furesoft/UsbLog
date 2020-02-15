@@ -15,19 +15,15 @@ namespace UsbLog.Core
 
             myStream = DISK.CreateStream($@"\\.\{name}", FileAccess.ReadWrite);
 
-            byte[] firstBlock;
-
             if (!myStream.f_error)
             {
-                firstBlock = DISK.ReadBytes(0, 4, myStream);
-
-                Logger.Trace(Encoding.ASCII.GetString(firstBlock));
-
                 try
                 {
                     Logger.Trace($"Read USB Magic Number");
                     var magic = DISK.ReadBytes(0, 4, myStream);
-                    Logger.Trace(magic);
+                    var magicString = Encoding.ASCII.GetString(magic);
+
+                    return magicString == "regf";
                 }
                 catch (Exception ex)
                 {
@@ -72,8 +68,8 @@ namespace UsbLog.Core
 
         public static void Stop()
         {
-            insertWatcher.Stop();
-            removeWatcher.Stop();
+            insertWatcher?.Stop();
+            removeWatcher?.Stop();
         }
 
         private static readonly NLog.Logger Logger = NLog.LogManager.GetCurrentClassLogger();

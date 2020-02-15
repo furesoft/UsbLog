@@ -12,6 +12,7 @@ namespace UsbLog.Service
             UsbHelper.OnAttach(_ =>
             {
                 var configured = UsbHelper.IsConfigured(_);
+                Logger.Trace(configured);
             });
 
             return true;
