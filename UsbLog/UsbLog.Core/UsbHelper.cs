@@ -1,4 +1,5 @@
-﻿using System;
+﻿using DiscUtils.Registry;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -9,6 +10,18 @@ namespace UsbLog.Core
 {
     public class UsbHelper
     {
+        public static void Configure(DISK.SafeStreamManager myStream, Action<RegistryKey> configurator)
+        {
+            var ms = new MemoryStream();
+
+            var regf = RegistryHive.Create(ms);
+            configurator(regf.Root);
+
+            var buffer = ms.ToArray();
+
+            DISK.WriteBytes(0, buffer.Length, buffer, myStream);
+        }
+
         public static DISK.SafeStreamManager GetStream(string name)
         {
             return DISK.CreateStream($@"\\.\{name}", FileAccess.ReadWrite);
