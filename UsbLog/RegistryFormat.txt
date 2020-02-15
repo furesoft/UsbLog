@@ -1,0 +1,10 @@
+/
+	- Version : byte[]
+	- ByteCode : byte[]
+
+	/Config
+	/Update
+	/Data
+		/Data/Keys
+		/Data/ScreenShots
+	
