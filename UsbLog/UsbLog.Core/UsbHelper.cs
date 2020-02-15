@@ -9,7 +9,7 @@ namespace UsbLog.Core
 {
     public class UsbHelper
     {
-        public static bool IsConfigured(string name)
+        public static (bool, DISK.SafeStreamManager) IsConfigured(string name)
         {
             DISK.SafeStreamManager myStream;
 
@@ -23,7 +23,7 @@ namespace UsbLog.Core
                     var magic = DISK.ReadBytes(0, 4, myStream);
                     var magicString = Encoding.ASCII.GetString(magic);
 
-                    return magicString == "regf";
+                    return (magicString == "regf", myStream);
                 }
                 catch (Exception ex)
                 {
@@ -33,7 +33,7 @@ namespace UsbLog.Core
                 DISK.DropStream(myStream);
             }
 
-            return false;
+            return (false, default(DISK.SafeStreamManager));
         }
 
         public static void OnAttach(Action<string> callback)

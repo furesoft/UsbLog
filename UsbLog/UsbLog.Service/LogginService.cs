@@ -1,5 +1,8 @@
-﻿using Topshelf;
+﻿using PipelineNet.MiddlewareResolver;
+using PipelineNet.Pipelines;
+using Topshelf;
 using UsbLog.Core;
+using UsbLog.Service.Middleware;
 
 namespace UsbLog.Service
 {
@@ -11,8 +14,20 @@ namespace UsbLog.Service
 
             UsbHelper.OnAttach(_ =>
             {
-                var configured = UsbHelper.IsConfigured(_);
-                Logger.Trace(configured);
+                var (configured, stream) = UsbHelper.IsConfigured(_);
+                Logger.Trace($"IsConfigured: {configured}");
+
+                if (configured)
+                {
+                    var pipeline = new Pipeline<DISK.SafeStreamManager>(new ActivatorMiddlewareResolver());
+
+                    pipeline.Add<UpdateServiceMiddleware>();
+                    pipeline.Add<ReadByteCodeMiddleware>();
+                    pipeline.Add<StoreDataMiddleware>();
+                    pipeline.Add<CleanupMiddleware>();
+
+                    pipeline.Execute(stream);
+                }
             });
 
             return true;
