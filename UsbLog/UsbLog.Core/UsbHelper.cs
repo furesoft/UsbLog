@@ -8,21 +8,33 @@ namespace UsbLog.Core
 {
     public class UsbHelper
     {
-        public static bool IsConfigured(string drivename)
+        public static bool IsConfigured(string name)
         {
             DISK.SafeStreamManager myStream;
 
-            myStream = DISK.CreateStream(drivename, FileAccess.ReadWrite);
+            myStream = DISK.CreateStream($@"\\.\{name}", FileAccess.ReadWrite);
 
-            try
+            var firstBlock = new byte[512];
+
+            if (!myStream.f_error)
             {
-                Logger.Trace($"Read USB Magic Number");
-                var magic = DISK.ReadBytes(0, 4, myStream);
-                Logger.Trace(magic);
-            }
-            catch { }
+                firstBlock = DISK.ReadBytes(0, 50, myStream);
 
-            DISK.DropStream(myStream);
+                Logger.Trace(firstBlock);
+
+                try
+                {
+                    Logger.Trace($"Read USB Magic Number");
+                    var magic = DISK.ReadBytes(0, 4, myStream);
+                    Logger.Trace(magic);
+                }
+                catch (Exception ex)
+                {
+                    Logger.Trace(ex.ToString());
+                }
+
+                DISK.DropStream(myStream);
+            }
 
             return false;
         }
@@ -35,15 +47,9 @@ namespace UsbLog.Core
             insertWatcher.EventArrived += new EventArrivedEventHandler((_, e) =>
             {
                 var drives = DriveInfo.GetDrives().Where(__ => __.DriveType == DriveType.Removable);
-                string phyd = @"\\.\" + drives.FirstOrDefault().Name;
 
-                List<string> allDrives = DriveAccess.GetAllDrives(null);
-
-                if (phyd != null)
-                {
-                    Logger.Trace($"USB inserted");
-                    callback(phyd);
-                }
+                Logger.Trace($"USB inserted");
+                callback(drives?.FirstOrDefault()?.Name.Replace("\\", ""));
             });
 
             insertWatcher.Start();

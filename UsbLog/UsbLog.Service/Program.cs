@@ -13,7 +13,7 @@ namespace UsbLog.Service
             var logconsole = new NLog.Targets.ConsoleTarget("logconsole");
 
             // Rules for mapping loggers to targets
-            config.AddRule(NLog.LogLevel.Debug, NLog.LogLevel.Fatal, logconsole);
+            config.AddRule(NLog.LogLevel.Trace, NLog.LogLevel.Fatal, logconsole);
 
             // Apply config
             NLog.LogManager.Configuration = config;
