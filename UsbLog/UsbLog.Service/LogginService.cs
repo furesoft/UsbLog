@@ -7,6 +7,8 @@ namespace UsbLog.Service
     {
         public bool Start(HostControl hostControl)
         {
+            Logger.Trace($"Service started");
+
             UsbHelper.OnAttach(_ =>
             {
                 var configured = UsbHelper.IsConfigured(_);
@@ -17,8 +19,13 @@ namespace UsbLog.Service
 
         public bool Stop(HostControl hostControl)
         {
+            Logger.Trace($"Service stopped");
+
             UsbHelper.Stop();
+
             return true;
         }
+
+        private static readonly NLog.Logger Logger = NLog.LogManager.GetCurrentClassLogger();
     }
 }

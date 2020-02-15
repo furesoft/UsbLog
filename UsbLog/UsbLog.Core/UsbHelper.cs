@@ -12,12 +12,13 @@ namespace UsbLog.Core
         {
             DISK.SafeStreamManager myStream;
 
-            myStream = DISK.CreateStream(drivename, FileAccess.Read);
+            myStream = DISK.CreateStream(drivename, FileAccess.ReadWrite);
 
             try
             {
+                Logger.Trace($"Read USB Magic Number");
                 var magic = DISK.ReadBytes(0, 4, myStream);
-                Console.WriteLine(magic);
+                Logger.Trace(magic);
             }
             catch { }
 
@@ -40,6 +41,7 @@ namespace UsbLog.Core
 
                 if (phyd != null)
                 {
+                    Logger.Trace($"USB inserted");
                     callback(phyd);
                 }
             });
@@ -59,6 +61,7 @@ namespace UsbLog.Core
 
                 if (phyd != null)
                 {
+                    Logger.Trace($"USB ejected");
                     callback(phyd);
                 }
             });
@@ -72,6 +75,7 @@ namespace UsbLog.Core
             removeWatcher.Stop();
         }
 
+        private static readonly NLog.Logger Logger = NLog.LogManager.GetCurrentClassLogger();
         private static ManagementEventWatcher insertWatcher;
         private static ManagementEventWatcher removeWatcher;
     }
